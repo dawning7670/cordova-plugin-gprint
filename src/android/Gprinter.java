@@ -326,10 +326,12 @@ public class Gprinter extends CordovaPlugin {
             }
             Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
             if (pairedDevices.size() > 0) {
-                JSONObject json = new JSONObject();
+                JSONArray json = new JSONArray();
                 for (BluetoothDevice device : pairedDevices) {
-                    json.put("name", device.getName());
-                    json.put("address", device.getAddress());
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("name", device.getName());
+                    jsonObject.put("address", device.getAddress());
+                    json.put(jsonObject);
                 }
                 callbackContext.success(json);
             } else {
