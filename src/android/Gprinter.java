@@ -1,5 +1,7 @@
 package cordova.plugin.gprint;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -26,6 +28,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Set;
 import java.util.Vector;
 
 /**
@@ -167,6 +170,10 @@ public class Gprinter extends CordovaPlugin {
             sendTscCommand(args);
             return true;
         }
+        if (action.equals("list_device")) {
+            listBT(args);
+            return true;
+        }
         return false;
     }
 
@@ -299,6 +306,40 @@ public class Gprinter extends CordovaPlugin {
             callbackContext.error("Error(Parameters):" + e.getMessage());
         } catch (RemoteException e) {
             callbackContext.error("Error(SendTscCommand):" + e.getMessage());
+        }
+    }
+
+    void listBT(final JSONArray args) {
+        BluetoothAdapter mBluetoothAdapter = null;
+        String errMsg = null;
+        try {
+            mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+            if (mBluetoothAdapter == null) {
+                errMsg = "No bluetooth adapter available";
+                Log.e(LOG_TAG, errMsg);
+                callbackContext.error(errMsg);
+                return;
+            }
+            if (!mBluetoothAdapter.isEnabled()) {
+                Intent enableBluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                this.cordova.getActivity().startActivityForResult(enableBluetooth, 0);
+            }
+            Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+            if (pairedDevices.size() > 0) {
+                JSONObject json = new JSONObject();
+                for (BluetoothDevice device : pairedDevices) {
+                    json.put("name", device.getName());
+                    json.put("address", device.getAddress());
+                }
+                callbackContext.success(json);
+            } else {
+                callbackContext.error("No Bluetooth Device Found");
+            }
+        } catch (Exception e) {
+            errMsg = e.getMessage();
+            Log.e(LOG_TAG, errMsg);
+            e.printStackTrace();
+            callbackContext.error(errMsg);
         }
     }
 
