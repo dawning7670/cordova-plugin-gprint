@@ -170,7 +170,7 @@ public class Gprinter extends CordovaPlugin {
             sendTscCommand(args);
             return true;
         }
-        if (action.equals("list_device")) {
+        if (action.equals("listBT")) {
             listBT(args);
             return true;
         }
