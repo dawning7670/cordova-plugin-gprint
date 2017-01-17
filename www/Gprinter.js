@@ -6,10 +6,10 @@
     var bluetoothleName = "BluetoothLePlugin";
     var gprinter = {
         openPort: function (success, error, params) {
-            cordova.exec(success, success, gprinterName, "openPort", [params]);
+            cordova.exec(success, error, gprinterName, "openPort", [params]);
         },
         closePort: function (success, error, params) {
-            cordova.exec(success, success, gprinterName, "closePort", [params]);
+            cordova.exec(success, error, gprinterName, "closePort", [params]);
         },
         getPrinterConnectStatus: function (success, error, params) {
             cordova.exec(success, error, gprinterName, "getPrinterConnectStatus", [params]);
@@ -31,6 +31,9 @@
         },
         getCommand: function (success, error, params) {
             cordova.exec(success, error, gprinterName, "getCommand", params);
+        },
+        listBT: function (success, error) {
+            cordova.exec(success, error, gprinterName, "listBT", []);
         }
     }
     channel.createSticky('onCordovaConnectionReady');
