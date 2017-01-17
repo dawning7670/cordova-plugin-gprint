@@ -162,10 +162,11 @@ gprinter.func(success: function, error: function, params: JSON)
   ```
   success = function(base64){}
   error = function(err_msg){}
-  params = {
-    "functionName": String,
-    ""
-  }
+  params = [
+   {
+     "functionName": String
+   },...
+  ]
   ```
 
 - printTestPage
