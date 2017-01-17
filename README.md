@@ -192,10 +192,12 @@ gprinter.func(success: function, error: function, params: JSON)
   error = function(err_msg){}
 
   // 返回值device说明
-  {
-    "name": String,
-    "address": String
-  }
+  [
+    {
+      "name": String,
+      "address": String
+    },...
+  ]
   ```
 
   ​
